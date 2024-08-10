@@ -1,5 +1,9 @@
 .homeContainer {
     display: grid;
-    grid-template-columns: 1fr 5fr;
+    grid-template-columns: 1fr 4fr;
     background: #353535;
+
+    .homeRight {
+        margin-right: 20px;
+    }
 }

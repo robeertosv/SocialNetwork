@@ -1,0 +1,78 @@
+.createContainer {
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    margin-top: 5vh;
+    border: 2px solid #eee;
+    border-radius: 20px;
+
+    form { width: 100% }
+
+    
+    .writeZone {
+        
+        width: 100%;
+        margin: 5px;
+        min-height: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        p {
+            position: relative;
+            margin-top: 20px;
+            padding-bottom: 10px;
+            left: 40%;
+        }
+        
+        textarea {
+            width: 90%;
+            font-size: 20px;
+            margin-top: 5vh;
+            padding: 5px;
+            color: #eee;
+            background: transparent;
+            outline: 0;
+            border: 0;
+            resize: none;
+            overflow: hidden;
+            border-bottom: 2px solid #eee;
+        }
+    }
+
+    .tools {
+    
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: right;
+        
+        button, label {
+            margin-right: 50px;
+            width: 75px;
+            height: 40px;
+            background: rgb(0, 98, 255);
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        label {
+            height: 20px
+        }
+        #image {
+            width: 82px;
+            height: 20px;
+            position:relative;
+            right: 5%;
+            bottom: 100%;
+            opacity: 0;        
+            cursor: pointer;   
+        }
+    }
+}
