@@ -19,7 +19,7 @@ const schema = mongoose.Schema({
         type: String
     },
     likes: {
-        required: true,
+        required: false,
         type: Number,
         default: 0
     },
@@ -29,7 +29,7 @@ const schema = mongoose.Schema({
         default: []
     },
     commentsAvailable: {
-        required: true,
+        required: false,
         type: Boolean,
         default: true
     }

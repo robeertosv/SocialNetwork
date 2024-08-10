@@ -5,6 +5,7 @@ import path from 'path'
 
 import connectDB from './db/connectDB.js'
 import authRouter from './routes/auth.routes.js'
+import postRouter from './routes/post.routes.js'
 
 configDotenv()
 
@@ -22,6 +23,7 @@ app.use(cors(corsConfig))
 app.use(express.static(path.join(__dirname, '../frontend', 'dist')))
 
 app.use('/api/auth', authRouter)
+app.use('/api/posts', postRouter)
 
 app.get('/', (req, res) =>  res.sendFile(path.join(__dirname, '../frontend/dist/index.html')))
 
