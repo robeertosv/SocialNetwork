@@ -9,6 +9,10 @@ const schema = mongoose.Schema({
         required: false,
         type: String,
     },
+    date: {
+        required: true,
+        type: Date,
+    },
     // Required if image not present
     textContent: {
         required: false,
