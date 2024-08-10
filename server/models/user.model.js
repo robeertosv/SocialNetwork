@@ -14,6 +14,16 @@ const schema = mongoose.Schema({
         required: true,
         type: String
     },
+    pic: {
+        required: true,
+        type: String,
+        default: '/assets/no-pic.png'
+    },
+    isPrivate: {
+        required: true,
+        type: Boolean,
+        default: true
+    },
     isVerfied: {
         required: true,
         type: Boolean,
