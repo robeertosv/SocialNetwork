@@ -3,6 +3,8 @@ import cors from 'cors'
 import { configDotenv } from 'dotenv'
 import path from 'path'
 
+import connectDB from './db/connectDB.js'
+
 configDotenv()
 
 const port = process.env.PORT || 80
@@ -21,5 +23,6 @@ app.use(express.static(path.join(__dirname, '../frontend', 'dist')))
 app.get('/', (req, res) =>  res.sendFile(path.join(__dirname, '../frontend/dist/index.html')))
 
 app.listen(port, () => {
+    connectDB()
     console.log('http://localhost')
 })
