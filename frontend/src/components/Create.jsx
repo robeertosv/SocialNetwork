@@ -5,6 +5,7 @@ const Create = () => {
     const [postLength, setPostLength] = useState(0);
     const [previewImage, setPreviewImage] = useState(null)
     const [image, setImage] = useState(null)
+    const [postText, setPostText] = useState('')
     const [btnVisible, setBtnVisible] = useState(false)
 
     useEffect(() => {
@@ -38,6 +39,7 @@ const Create = () => {
     }, [image, btnVisible]);
 
     const changeLength = (e) => {
+        setPostText(e.target.value)
         setPostLength(e.target.value.length);
     };
 
@@ -75,6 +77,10 @@ const Create = () => {
         setBtnVisible(false)
     }
 
+    const formatText = (text) => {
+        return text.replace(/(#\w+)/g, '<a href="#">$1</a>').replace(/(@\w+)/g, '<a href="#">$1</a>');
+    };
+
     return (
         <div className='createContainer'>
             <form method='POST' encType='multipart/form-data' onSubmit={handleSubmit}>
@@ -83,8 +89,12 @@ const Create = () => {
                         <img src={previewImage} id='imgPreview' />
                         <button onClick={deleteImage} id='closePreviewBtn'>X</button>
                     </div>
-                    <textarea id="postText" placeholder='Escribe algo' name='post' cols="30" rows="1" maxLength={200} onChange={changeLength}></textarea>
+                    <textarea id="postText" placeholder='Escribe algo' name='post' cols="30" rows="1" maxLength={200} onChange={changeLength} value={postText}></textarea>
                     <p>{postLength}/200</p>
+                    <div
+                        className="formattedText"
+                        dangerouslySetInnerHTML={{ __html: formatText(postText) }}
+                    ></div>
                 </div>
                 <div className="tools">
                     <label id="addImage" htmlFor='image'>Image<input onChange={changePreviewImage} type="file" name="image" id="image" accept="image/*" /></label>

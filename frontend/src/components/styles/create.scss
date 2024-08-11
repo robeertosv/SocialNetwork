@@ -21,6 +21,10 @@
         flex-direction: column;
         align-items: center;
 
+        .formattedText a {
+            color: rgb(0, 98, 255)
+        }
+
         img {
             height: 25vh;
             width: 25vw;
