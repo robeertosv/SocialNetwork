@@ -29,9 +29,6 @@ export const upload = multer({ storage: storage });
 export const create = async (req, res) => {
     // Loguear los datos recibidos
     try {
-        console.log('Body:', req.body);
-        console.log('File:', req.file);
-
         if (req.body == {} && !req.file) {
             return res.status(400).json({ error: 'Not a valid post' })
         }
