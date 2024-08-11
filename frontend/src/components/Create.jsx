@@ -3,8 +3,31 @@ import './styles/create.scss'
 
 const Create = () => {
     const [postLength, setPostLength] = useState(0);
+    const [previewImage, setPreviewImage] = useState(null)
+    const [image, setImage] = useState(null)
+    const [btnVisible, setBtnVisible] = useState(false)
 
     useEffect(() => {
+
+        if(!btnVisible) {
+            document.querySelector('#closePreviewBtn').style.display = 'none'
+            document.querySelector('#imgPreview').style.display = 'none'
+        }else {
+            document.querySelector('#closePreviewBtn').style.display = 'block'
+            document.querySelector('#imgPreview').style.display = 'block'
+        }
+
+        if (image) {
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setPreviewImage(reader.result)
+            }
+            reader.readAsDataURL(image)
+            setBtnVisible(true)
+        } else {
+            setPreviewImage(null)
+        }
+
         const textarea = document.getElementById('postText');
         const adjustHeight = () => {
             textarea.style.height = 'auto';
@@ -12,11 +35,17 @@ const Create = () => {
         };
         textarea.addEventListener('input', adjustHeight);
         return () => textarea.removeEventListener('input', adjustHeight);
-    }, []);
+    }, [image, btnVisible]);
 
     const changeLength = (e) => {
         setPostLength(e.target.value.length);
     };
+
+    const changePreviewImage = (e) => {
+        const file = e.target.files[0]
+
+        if (file) { setImage(file) }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,15 +69,25 @@ const Create = () => {
         }
     };
 
+    const deleteImage = () => {
+        setPreviewImage(null)
+        setImage(null)
+        setBtnVisible(false)
+    }
+
     return (
         <div className='createContainer'>
             <form method='POST' encType='multipart/form-data' onSubmit={handleSubmit}>
                 <div className="writeZone">
+                    <div className="imagePreview">
+                        <img src={previewImage} id='imgPreview' />
+                        <button onClick={deleteImage} id='closePreviewBtn'>X</button>
+                    </div>
                     <textarea id="postText" placeholder='Escribe algo' name='post' cols="30" rows="1" maxLength={200} onChange={changeLength}></textarea>
                     <p>{postLength}/200</p>
                 </div>
                 <div className="tools">
-                    <label id="addImage" htmlFor='image'>Image<input type="file" name="image" id="image" accept="image/*" /></label>
+                    <label id="addImage" htmlFor='image'>Image<input onChange={changePreviewImage} type="file" name="image" id="image" accept="image/*" /></label>
                     <button id="send" type="submit">Post</button>
                 </div>
             </form>
