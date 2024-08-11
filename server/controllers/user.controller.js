@@ -11,3 +11,22 @@ export const checkUsername = async (req, res) => {
         return res.status(200).json({ exist: false })
     }
 }
+
+export const getUserProfile = async (req, res) => {
+    const { username } = req.body;
+
+    const user = await User.findOne({ username })
+
+    const result = {
+        name: user.name,
+        bio: user.bio,
+        pic: user.pic,
+        verified: user.isVerfied,
+        private: user.isPrivate,
+        seguidores: user.followers.length,
+        seguidos: user.following.length,
+        banned: user.isBanned
+    }
+
+    return res.status(200).json(JSON.stringify(result))
+}

@@ -10,8 +10,12 @@ const schema = mongoose.Schema({
         type: String,
         required: true
     },
+    bio: {
+        type: String,
+        required: false
+    },
     name: {
-        required: false,
+        required: true,
         type: String
     },
     password: {
@@ -21,7 +25,7 @@ const schema = mongoose.Schema({
     pic: {
         required: true,
         type: String,
-        default: '/assets/no-pic.png'
+        default: ''
     },
     isPrivate: {
         required: true,
