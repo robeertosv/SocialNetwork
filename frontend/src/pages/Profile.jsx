@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { checkUsername, fetchProfile } from '../utils/fetchers'
+import { checkUsername, fetchProfile, getUserPosts } from '../utils/fetchers'
 import LeftSideMenu from '../components/LeftSideMenu'
+import Post from '../components/Post'
 import '../styles/profile.scss'
 
 const Profile = () => {
@@ -11,6 +12,8 @@ const Profile = () => {
   const [bio, setBio] = useState('')
   const [followers, setFollowers] = useState(0)
   const [follows, setFollows] = useState(0)
+  const [posts, setPosts] = useState({posts: []})
+
 
   useEffect(() => {
     async function replaceIfNeed() {
@@ -26,10 +29,15 @@ const Profile = () => {
       setFollowers(seguidores)
       setFollows(seguidos)
 
-      if(pic != '') {
+      if (pic != '') {
         setProfilePic(pic)
       }
     } getProfileData()
+
+    async function gposts() {
+      const post = await getUserPosts('roberto')
+      setPosts(post)
+    } gposts()
 
   }, [])
 
@@ -56,7 +64,25 @@ const Profile = () => {
           </div>
         </div>
         <div className="profilePosts">
-          POSTS
+          
+          { 
+            posts.posts != [] ? (
+              posts.posts.map((item, idx) => (
+                <Post
+                    key={idx}
+                    username={username}
+                    profilePic={profilePic}
+                    isVerified={isVerified}
+                    postText={item.textContent}
+                    postImage={item.isImage? item.image : null}
+                    likes={item.likes}
+                    comments={item.comments.length}
+                />
+            ))
+            ) : (<p>Loading posts...</p>)
+
+            
+          }
         </div>
       </div>
     </div>

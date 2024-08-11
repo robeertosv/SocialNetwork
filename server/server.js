@@ -7,6 +7,7 @@ import connectDB from './db/connectDB.js'
 import authRouter from './routes/auth.routes.js'
 import postRouter from './routes/post.routes.js'
 import userRouter from './routes/user.routes.js'
+import fileRouter from './routes/files.routes.js'
 
 configDotenv()
 
@@ -26,8 +27,10 @@ app.use(express.static(path.join(__dirname, '../frontend', 'dist')))
 app.use('/api/auth', authRouter)
 app.use('/api/posts', postRouter)
 app.use('/api/users', userRouter)
+app.use('/images', fileRouter)
 
 app.get('*', (req, res) =>  res.sendFile(path.join(__dirname, '../frontend/dist/index.html')))
+
 
 app.listen(port, () => {
     connectDB()

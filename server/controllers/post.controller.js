@@ -35,7 +35,7 @@ export const create = async (req, res) => {
 
         const post = await new Post({
             isImage: req.file ? true : false,
-            image: req.file ? req.file.filename : null,
+            image: req.file ? 'http://localhost/images/'+req.file.filename : null,
             textContent: req.body ? req.body.post : null,
             date: Date.now(),
 
@@ -47,5 +47,17 @@ export const create = async (req, res) => {
         return res.status(200).json({ message: 'Datos recibidos correctamente' });
     } catch (err) {
         return res.status(500).json({ error: err.message })
+    }
+}
+
+export const allPostUID = async (req, res) => {
+    try {
+        const { UID } = req.body
+
+        const posts = await Post.find({ ownerId: UID })
+
+        return res.status(200).json({ posts })
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
     }
 }

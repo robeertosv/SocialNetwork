@@ -3,11 +3,11 @@ import User from '../models/user.model.js'
 export const checkUsername = async (req, res) => {
     const { username } = req.body
 
-    const user = await User.findOne({username})
+    const user = await User.findOne({ username })
 
-    if(user) {
+    if (user) {
         return res.status(200).json({ exist: true })
-    }else {
+    } else {
         return res.status(200).json({ exist: false })
     }
 }
@@ -29,4 +29,14 @@ export const getUserProfile = async (req, res) => {
     }
 
     return res.status(200).json(JSON.stringify(result))
+}
+
+export const getUID = async (req, res) => {
+    const { username } = req.body
+    try {
+        const user = await User.findOne({ username })
+        return res.status(200).json({ UID: user._id })
+    } catch (err) {
+        return res.status(500).json({ error: err.message })
+    }
 }

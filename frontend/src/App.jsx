@@ -14,6 +14,8 @@ const App = () => {
                 <Route path='/login' element={<Login />} />
                 <Route path='/settings' element={<Settings />} />
                 <Route path='*' element={<Profile/>}/>
+                <Route path='/images/*' element={null}/>
+                
             </Routes>
         </BrowserRouter>
   )
