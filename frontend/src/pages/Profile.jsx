@@ -76,7 +76,9 @@ const Profile = () => {
                 <h1>{name}</h1>
                 {isVerified ? (<img src="verified.png" alt="" />) : ''}
               </div>
-              <button>Seguir</button>
+              {
+                username != userData.username ? (<button>Seguir</button>) : (<button>Editar</button>)
+              }
             </div>
             <p>@{username}</p>
             <h2>{bio}</h2>
