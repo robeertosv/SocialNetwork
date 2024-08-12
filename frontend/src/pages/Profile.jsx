@@ -37,8 +37,10 @@ const Profile = () => {
     } getProfileData()
 
     async function gposts() {
-      const post = await getUserPosts('roberto')
-      setPosts(post)
+      if (!isPrivate) {
+        const post = await getUserPosts(username)
+        setPosts(post)
+      }
     } gposts()
 
   }, [])
@@ -83,7 +85,7 @@ const Profile = () => {
                   />
                 ))
               ) : (<p>Loading posts...</p>)
-            ) : (<div className='privateAccount'><img src="lock.png" alt="" /> <p>LA CUENTA ES PRIVADA</p></div>)           
+            ) : (<div className='privateAccount'><img src="lock.png" alt="" /> <p>LA CUENTA ES PRIVADA</p></div>)
           }
         </div>
       </div>
