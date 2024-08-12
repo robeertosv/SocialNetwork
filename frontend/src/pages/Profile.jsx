@@ -33,6 +33,7 @@ const Profile = () => {
       setIsPrivate(privada)
       if(!privada) { gposts()}
       
+      
 
       if (pic != '') {
         setProfilePic(pic)
@@ -60,6 +61,8 @@ const Profile = () => {
       if(!res.username) { return window.location.replace('/login') }
 
       setUserData(res)
+
+      if(res.username == username) { setIsPrivate(false) ; gposts()}
   } getUserByToken()
 
   }, [])
