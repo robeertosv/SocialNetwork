@@ -37,6 +37,7 @@ export const fetchProfile = async (username) => {
         biografia: res.bio,
         pic: res.pic != '' ? res.pic : null,
         verified: res.verified,
+        privada: res.private,
         seguidores: res.seguidores,
         seguidos: res.seguidos
     }

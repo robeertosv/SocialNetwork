@@ -77,7 +77,24 @@
             flex-direction: column;
             align-items: center;
             margin-top: 10px;
-            background: yellow;
+            
+            .privateAccount {
+                width: 100%;
+                height: 45vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                img {
+                    width: 100px;
+                }
+
+                p {
+                    position:relative;
+                    top: 10%;
+                }
+            }
         }
     }
 }

@@ -7,12 +7,13 @@ import '../styles/profile.scss'
 const Profile = () => {
   const username = window.location.pathname.split('/')[1]
   const [isVerified, setIsVerified] = useState(false)
+  const [isPrivate, setIsPrivate] = useState(true)
   const [profilePic, setProfilePic] = useState('no-profile.jpg')
   const [name, setName] = useState('')
   const [bio, setBio] = useState('')
   const [followers, setFollowers] = useState(0)
   const [follows, setFollows] = useState(0)
-  const [posts, setPosts] = useState({posts: []})
+  const [posts, setPosts] = useState({ posts: [] })
 
 
   useEffect(() => {
@@ -22,12 +23,13 @@ const Profile = () => {
     } replaceIfNeed()
 
     async function getProfileData() {
-      const { nombre, biografia, pic, verified, seguidores, seguidos } = await fetchProfile(username)
+      const { nombre, biografia, pic, verified, privada, seguidores, seguidos } = await fetchProfile(username)
       setName(nombre)
       setBio(biografia)
       setIsVerified(verified)
       setFollowers(seguidores)
       setFollows(seguidos)
+      setIsPrivate(privada)
 
       if (pic != '') {
         setProfilePic(pic)
@@ -64,24 +66,24 @@ const Profile = () => {
           </div>
         </div>
         <div className="profilePosts">
-          
-          { 
-            posts.posts != [] ? (
-              posts.posts.map((item, idx) => (
-                <Post
+          {
+            // TODO: Permitir acceso si la cuenta es publica o si el usuario loggeado sigue a la cuenta
+            !isPrivate ? (
+              posts.posts != [] ? (
+                posts.posts.map((item, idx) => (
+                  <Post
                     key={idx}
                     username={username}
                     profilePic={profilePic}
                     isVerified={isVerified}
                     postText={item.textContent}
-                    postImage={item.isImage? item.image : null}
+                    postImage={item.isImage ? item.image : null}
                     likes={item.likes}
                     comments={item.comments.length}
-                />
-            ))
-            ) : (<p>Loading posts...</p>)
-
-            
+                  />
+                ))
+              ) : (<p>Loading posts...</p>)
+            ) : (<div className='privateAccount'><img src="lock.png" alt="" /> <p>LA CUENTA ES PRIVADA</p></div>)           
           }
         </div>
       </div>
