@@ -23,7 +23,7 @@ const schema = mongoose.Schema({
         type: String
     },
     pic: {
-        required: true,
+        required: false,
         type: String,
         default: ''
     },

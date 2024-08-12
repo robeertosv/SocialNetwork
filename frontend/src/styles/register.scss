@@ -1,0 +1,67 @@
+.registerContainer {
+    background: #353535;
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    h1 {
+        position: relative;
+        bottom: 20px;
+    }
+
+    .registerForm {
+        background: rgb(0, 120, 255);
+        width: 75vw;
+        height: 75vh;
+        padding: 10px;
+        border-radius: 20px;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            label {
+                font-size: 20px;
+            }
+
+            input {
+                font-size: 20px;
+                max-width: 75%;
+                border-bottom: 2px solid #eee;
+                position: relative;
+                top: 2vh;
+                padding: 5px;
+                transition: 0.1s;
+            }
+
+            input:focus {
+                transition: 0.2s;
+                border-bottom: 4px solid #30ff30;
+            }
+
+            input::placeholder {
+                color: #353535aa;
+            }
+        }
+
+        button {
+            height: 33%;
+            width: 75%;
+            color: #353535;
+            font-size: 25px;
+            border-radius: 20px;
+            position: relative;
+            top: 2vh;
+            left: 2vw;
+        }
+    }
+}

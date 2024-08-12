@@ -24,6 +24,7 @@ const Login = () => {
       return alert(res.error)
     }
 
+    
     window.location.replace('/')
   }
 
