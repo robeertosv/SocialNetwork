@@ -57,7 +57,9 @@ const Profile = () => {
     } getProfileData()
 
     async function gposts() {
-      const post = await getUserPosts(username)
+      let post = await getUserPosts(username)
+      
+
       setPosts(post)
     }
 
@@ -125,7 +127,8 @@ const Profile = () => {
             (isPrivate == false) ? (
 
               posts.posts != [] ? (
-                posts.posts.map((item, idx) => (
+                posts.posts.reverse()
+                .map((item, idx) => (
                   <Post
                     key={idx}
                     username={username}
