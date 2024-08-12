@@ -1,4 +1,5 @@
 import User from '../models/user.model.js'
+import checkSign from '../utils/checkCookie.js'
 
 export const checkUsername = async (req, res) => {
     const { username } = req.body
@@ -39,4 +40,10 @@ export const getUID = async (req, res) => {
     } catch (err) {
         return res.status(500).json({ error: err.message })
     }
+}
+
+export const getUsernameByToken = async (req, res) => {
+    const data = await checkSign(req)
+    console.log(data)
+    return res.status(200).json(data)
 }

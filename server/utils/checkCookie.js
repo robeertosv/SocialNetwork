@@ -17,10 +17,10 @@ const checkSign = async (req, res) => {
 
 		req.user = user;
 
-        return res.send(user)
+        return user
 
 	} catch (error) {
-		res.status(500).json({ error: "Error al comprobar firma" + error.message });
+		return error
 	}
 };
 
