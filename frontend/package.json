@@ -1,6 +1,7 @@
 {
   "name": "react-template",
   "version": "1.0.0",
+  "proxy": "http://localhost",
   "scripts": {
     "dev": "farm start",
     "start": "farm start",
@@ -11,7 +12,8 @@
   "dependencies": {
     "react": "18",
     "react-dom": "18",
-    "react-router-dom": "^6.26.0"
+    "react-router-dom": "^6.26.0",
+    "react-template": "file:"
   },
   "devDependencies": {
     "@farmfe/cli": "^1.0.2",

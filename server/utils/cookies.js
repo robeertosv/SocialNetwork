@@ -5,7 +5,7 @@ const generateTokenAndCookie = async (userId, res) => {
 
     res.cookie("sessionToken", token, {
         maxAge: 30 * 24 * 3600 * 1000,
-        sameSite: "strict",
+        sameSite: "Lax",
         httpOnly: true
     })
 }

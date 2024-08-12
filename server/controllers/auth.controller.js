@@ -39,22 +39,22 @@ export const login = async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        const existeElUser = await User.findOne({ username });
-        if (!existeElUser) return res.status(404).json({ error: "No se encontró al usuario" })
+        const user = await User.findOne({ username });
+        if (!user) return res.status(404).json({ error: "No se encontró al usuario", code: 404})
 
         
 
-        const correctPass = await bcrypt.compare(password, existeElUser?.password || "");
+        const correctPass = await bcrypt.compare(password, user?.password || "");
 
-        if (!correctPass) return res.status(403).send({ error: "La contraseña no es correcta" })
+        if (!correctPass) return res.status(403).send({ error: "La contraseña no es correcta", code:403})
 
 
         generateTokenAndCookie(user._id, res);
-        return res.status(200).send("cookieCreated");
+        return res.status(200).json({error: "Login correcto", code:200});
 
 
     } catch (error) {
-        return res.status(500).json({ error: "Error al hacer el login: " + error.message })
+        return res.status(500).json({ error: "Error al hacer el login: " + error.message, code: 500})
     }
 }
 
