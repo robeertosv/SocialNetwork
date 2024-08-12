@@ -45,35 +45,71 @@ export const getUID = async (req, res) => {
 
 export const getUsernameByToken = async (req, res) => {
     const data = await checkSign(req)
-    
+
     return res.status(200).json(data)
 }
 
 export const requestFollow = async (req, res) => {
     try {
-        const { id, username } = req.body
+        const { id, username } = req.body;
 
-        const follower = await User.findOne({ _id: id })
+        const follower = await User.findOne({ _id: id });
+        const followed = await User.findOne({ username });
 
-        const followed = await User.findOne({ username })
+        if (!follower || !followed) {
+            return res.status(404).json({ error: "Usuario no encontrado" });
+        }
 
-        if(followed.isPrivate) {
-            return res.status(200).json({ error: "Deberás pedir una solicitud"})
+        if (followed.isPrivate) {
+            return res.status(200).json({ error: "Deberás pedir una solicitud" });
         } else {
-            let followerFollowings = follower.following
-            let followedFollowers = followed.followers
-            
-            followerFollowings.push(followed._id.toString())
-            followedFollowers.push(follower._id.toString())
+            // Inicializar arrays si están indefinidos
+            let followerFollowings = follower.following || [];
+            let followedFollowers = followed.followers || [];
 
-            await User.findByIdAndUpdate(follower._id, {following: followerFollowings} )
-            await User.findByIdAndUpdate(followed._id, {followers: followedFollowers })
+            // Agregar los IDs como cadenas de texto
+            followerFollowings.push(followed._id.toString());
+            followedFollowers.push(follower._id.toString());
 
-        
-            return res.status(200).json({ error: 'Os habeis empezado a seguir', followedFollowers: typeof(followedFollowers), followerFollowings})
+            // Actualizar los usuarios
+            await User.findByIdAndUpdate(follower._id, { following: followerFollowings });
+            await User.findByIdAndUpdate(followed._id, { followers: followedFollowers });
+
+            return res.status(200).json({ message: 'Os habeis empezado a seguir', followedFollowers, followerFollowings });
         }
 
     } catch (error) {
-        return res.status(500).json({ error: error.message })
+        return res.status(500).json({ error: error.message });
     }
-}
+};
+
+
+export const cancelFollow = async (req, res) => {
+    try {
+        const { id, username } = req.body;
+
+        const follower = await User.findOne({ _id: id });
+        const followed = await User.findOne({ username });
+
+        if (!follower || !followed) {
+            return res.status(404).json({ error: "Usuario no encontrado" });
+        }
+
+        // Asegurarse de que follower.following y followed.followers sean arrays
+        const followerFollowings = follower.following || [];
+        const followedFollowers = followed.followers || [];
+
+        // Filtrar los arrays de seguidores y seguidos
+        const updatedFollowerFollowings = followerFollowings.filter(f => f.toString() !== followed._id.toString());
+        const updatedFollowedFollowers = followedFollowers.filter(f => f.toString() !== follower._id.toString());
+
+        // Actualizar los usuarios con los arrays filtrados (asegurando que no sean null)
+        await User.findByIdAndUpdate(follower._id, { following: updatedFollowerFollowings });
+        await User.findByIdAndUpdate(followed._id, { followers: updatedFollowedFollowers });
+
+        return res.status(200).json({ message: `${follower.username} ha dejado de seguir a ${followed.username}` });
+
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};

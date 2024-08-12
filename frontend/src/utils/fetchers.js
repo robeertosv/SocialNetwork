@@ -72,3 +72,13 @@ export const requestFollow = async (id, username) => {
 
     return res
 }
+
+export const uFollow = async (id, username) => {
+    let body = JSON.stringify({ id, username })
+    let options = { headers, body, method, redirect }
+
+    let res = await fetch('http://localhost/api/users/unfollow', options)
+    res = await res.json()
+
+    return res
+}

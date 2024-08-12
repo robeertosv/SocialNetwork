@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { checkUsername, fetchProfile, getUserPosts, requestFollow } from '../utils/fetchers'
+import { checkUsername, fetchProfile, getUserPosts, requestFollow, uFollow} from '../utils/fetchers'
 import LeftSideMenu from '../components/LeftSideMenu'
 import Post from '../components/Post'
 import '../styles/profile.scss'
@@ -15,11 +15,19 @@ const Profile = () => {
   const [follows, setFollows] = useState([])
   const [id, setId] = useState('')
   const [posts, setPosts] = useState({ posts: [] })
+  const [isFollower, setIsFollower] = useState(false)
 
   const [userData, setUserData] = useState({})
 
   async function rFollow() {
-    requestFollow(userData._id, username)
+    await requestFollow(userData._id, username)
+    window.location.reload()
+  }
+  
+  async function unFollow() {
+    uFollow(userData._id, username)
+    window.location.reload()
+
   }
 
   useEffect(() => {
@@ -75,6 +83,7 @@ const Profile = () => {
       followers.forEach(async (f) => {
       if (f == userData._id.toString()) {
         setIsPrivate(false)
+        setIsFollower(true)
         gposts()
       }
     })
@@ -98,7 +107,7 @@ const Profile = () => {
                 {isVerified ? (<img src="verified.png" alt="" />) : ''}
               </div>
               {
-                username != userData.username ? (<button onClick={rFollow}>Seguir</button>) : (<button>Editar</button>)
+                username != userData.username ? ( isFollower ? <button onClick={unFollow}>Siguiendo</button> : <button onClick={rFollow}>Seguir</button>) : (<button>Editar</button>)
               }
             </div>
             <p>@{username}</p>
