@@ -31,7 +31,6 @@ export const fetchProfile = async (username) => {
     let res = await fetch('http://localhost/api/users/getUserProfile', options)
     res = await res.json()
     res = JSON.parse(res)
-    console.log(res)
     res = {
         nombre: res.name,
         biografia: res.bio,
@@ -59,6 +58,16 @@ export const getUserPosts = async (username) => {
     options = {headers, body, method, redirect}
 
     res = await fetch('http://localhost/api/posts/allPostUID', options)
+    res = await res.json()
+
+    return res
+}
+
+export const requestFollow = async (id, username) => {
+    let body = JSON.stringify({ id, username })
+    let options = { headers, body, method, redirect }
+
+    let res = await fetch('http://localhost/api/users/requestFollow', options)
     res = await res.json()
 
     return res
