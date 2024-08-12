@@ -15,6 +15,7 @@ const Profile = () => {
   const [follows, setFollows] = useState(0)
   const [posts, setPosts] = useState({ posts: [] })
 
+  const [userData, setUserData] = useState({})
 
   useEffect(() => {
     async function replaceIfNeed() {
@@ -30,6 +31,8 @@ const Profile = () => {
       setFollowers(seguidores)
       setFollows(seguidos)
       setIsPrivate(privada)
+      if(!privada) { gposts()}
+      
 
       if (pic != '') {
         setProfilePic(pic)
@@ -37,17 +40,33 @@ const Profile = () => {
     } getProfileData()
 
     async function gposts() {
-      if (!isPrivate) {
         const post = await getUserPosts(username)
         setPosts(post)
+    } 
+
+    async function getUserByToken() {
+      let headers = new Headers()
+      headers.append('Content-Type', 'application/json')
+
+      let options = {
+          headers,
+          method: 'POST',
+          credentials: 'include',
+          redirect: 'follow'
       }
-    } gposts()
+      let res = await fetch('http://localhost/api/users/getUserByToken', options)
+      res = await res.json()
+
+      if(!res.username) { return window.location.replace('/login') }
+
+      setUserData(res)
+  } getUserByToken()
 
   }, [])
 
   return (
     <div className='profileContainer'>
-      <LeftSideMenu />
+      <LeftSideMenu username={userData.username} />
       <div className="profileContent">
         <div className="profileInfo">
           <div className="userInfo">
@@ -68,9 +87,11 @@ const Profile = () => {
           </div>
         </div>
         <div className="profilePosts">
+          
           {
             // TODO: Permitir acceso si la cuenta es publica o si el usuario loggeado sigue a la cuenta
-            !isPrivate ? (
+            (isPrivate == false) ? (
+              
               posts.posts != [] ? (
                 posts.posts.map((item, idx) => (
                   <Post

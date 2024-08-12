@@ -34,6 +34,7 @@ export const create = async (req, res) => {
         }
 
         const post = await new Post({
+            ownerId: req.body.ownerId,
             isImage: req.file ? true : false,
             image: req.file ? 'http://localhost/images/'+req.file.filename : null,
             textContent: req.body ? req.body.post : null,

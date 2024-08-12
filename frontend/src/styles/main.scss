@@ -10,6 +10,14 @@ button, input {
     outline: 0;
 }
 
+button {
+    cursor: pointer;
+}
+
 input {
     background: transparent;
+}
+
+a {
+    text-decoration: none;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './styles/create.scss'
 
-const Create = () => {
+const Create = ({uid}) => {
     const [postLength, setPostLength] = useState(0);
     const [previewImage, setPreviewImage] = useState(null)
     const [image, setImage] = useState(null)
@@ -62,6 +62,7 @@ const Create = () => {
             if (response.ok) {
                 // Manejar la respuesta exitosa
                 console.log('Post creado exitosamente');
+                window.location.reload()
             } else {
                 // Manejar errores
                 console.error('Error al crear el post');
@@ -89,6 +90,7 @@ const Create = () => {
                         <img src={previewImage} id='imgPreview' />
                         <button onClick={deleteImage} id='closePreviewBtn'>X</button>
                     </div>
+                    <input type="text" name='ownerId' value={uid} contentEditable={false} id='ownerID'/>
                     <textarea id="postText" placeholder='Escribe algo' name='post' cols="30" rows="1" maxLength={200} onChange={changeLength} value={postText}></textarea>
                     <p>{postLength}/200</p>
                     <div

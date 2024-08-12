@@ -5,6 +5,10 @@ const schema = mongoose.Schema({
         required: true,
         type: Boolean
     },
+    ownerId: {
+        type: String,
+        required: true
+    },
     image: {
         required: false,
         type: String,

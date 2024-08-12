@@ -25,7 +25,7 @@ const Home = () => {
 
             setUserData(res)
         } getUserByToken()
-
+        console.log(userData)
     }, [])
 
     return (
@@ -34,7 +34,7 @@ const Home = () => {
                 <LeftSideMenu username={userData.username}/>
             </div>
             <div className="homeRight">
-                <Create />
+                <Create uid={userData._id}/>
                 <Feed />
             </div>
         </div>
