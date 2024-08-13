@@ -14,23 +14,29 @@ export const checkUsername = async (req, res) => {
 }
 
 export const getUserProfile = async (req, res) => {
-    const { username } = req.body;
+    try {
+        const { username } = req.body;
 
-    const user = await User.findOne({ username })
+        const user = await User.findOne({ username })
 
-    const result = {
-        id: user._id.toString(),
-        name: user.name,
-        bio: user.bio,
-        pic: user.pic,
-        verified: user.isVerfied,
-        private: user.isPrivate,
-        seguidores: user.followers,
-        seguidos: user.following,
-        banned: user.isBanned
+        if (!user) { return res.status(404).json({ error: 'nouser', errorMessage: "El usuario no existe" }) }
+
+        const result = {
+            id: user._id.toString(),
+            name: user.name,
+            bio: user.bio,
+            pic: user.pic,
+            verified: user.isVerfied,
+            private: user.isPrivate,
+            seguidores: user.followers,
+            seguidos: user.following,
+            banned: user.isBanned
+        }
+
+        return res.status(200).json(JSON.stringify(result))
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
     }
-
-    return res.status(200).json(JSON.stringify(result))
 }
 
 export const getUID = async (req, res) => {
