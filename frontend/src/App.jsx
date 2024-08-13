@@ -4,6 +4,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Settings from './pages/Settings'
 import Profile from './pages/Profile'
+import NotFound from './pages/NotFound'
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
                 <Route path='/settings' element={<Settings />} />
                 <Route path='*' element={<Profile/>}/>
                 <Route path='/images/*' element={null}/>
-                
+                <Route path='404' element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>
   )

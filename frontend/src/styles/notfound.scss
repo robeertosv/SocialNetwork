@@ -1,0 +1,24 @@
+.notFoundContainer {
+    background: #353535;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    h1 {
+        text-transform: uppercase;
+        margin: 20px;
+    }
+
+    h2 {
+        margin: 20px;
+
+        a { text-decoration: underline; }
+    }
+
+    p {
+        position: absolute;
+        bottom: 30px;
+    }
+}
