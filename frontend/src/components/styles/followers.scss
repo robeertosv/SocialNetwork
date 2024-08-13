@@ -1,0 +1,82 @@
+.followerContainer {
+    background: #353535; /* Fondo blanco */
+    position: fixed; /* Fijo para que se mantenga en la pantalla */
+    overflow: auto; /* Permitir scroll si el contenido es demasiado grande */
+    width: 50vw; /* Ancho del 50% de la ventana */
+    height: 75vh; /* Alto del 75% de la ventana */
+    top: 50%; /* Centrar verticalmente */
+    left: 50%; /* Centrar horizontalmente */
+    transform: translate(-25%, -50%); /* Ajustar para centrar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 20px; /* Espaciado interno */
+    z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
+    
+    
+    h1 {
+        text-align: center; /* Centrar el título */
+        margin-bottom: 20px; /* Espacio debajo del título */
+        font-size: 1.5em; /* Tamaño de fuente del título */
+        color: #eee; /* Color del texto del título */
+        padding: 10px;
+    }
+
+    ul {
+        list-style-type: none; /* Quitar viñetas */
+        padding: 0; /* Quitar padding */
+        
+        li {
+            padding: 10px; /* Espaciado interno de los elementos de la lista */
+            border-bottom: 1px solid #ddd; /* Línea divisoria entre elementos */
+            
+            &:last-child {
+                border-bottom: none; /* Quitar línea del último elemento */
+            }
+
+            a {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                div {
+                    display: flex;
+                    align-items: center;
+
+                    img {
+                        width: 40px;
+                        border-radius: 50%;
+                    }
+
+                    p {
+                        margin-left: 10px;
+                    }
+                }
+
+                button {
+                    width: 30%;
+                    height: 30px;
+                    border-radius: 20px;
+                    background: rgb(0, 124, 255);
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+
+    .close-btn {
+        position: absolute; /* Posicionar el botón de cerrar */
+        top: 10px; /* Espaciado desde arriba */
+        right: 10px; /* Espaciado desde la derecha */
+        background: #ff5f5f; /* Fondo rojo */
+        color: #fff; /* Texto blanco */
+        border: none; /* Sin borde */
+        border-radius: 50%; /* Forma redonda */
+        width: 30px; /* Ancho del botón */
+        height: 30px; /* Alto del botón */
+        cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
+        font-size: 1.2em; /* Tamaño de fuente del botón */
+        display: flex; /* Usar flexbox */
+        align-items: center; /* Centrar verticalmente */
+        justify-content: center; /* Centrar horizontalmente */
+    }
+}

@@ -113,3 +113,59 @@ export const cancelFollow = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 };
+
+export const getFollowers = async (req, res) => {
+    try {
+        const ID = req.body.username;
+
+        const user = await User.findOne({ username: ID })
+
+        if (!user) { return res.status(404).json({ error: "No existe el usuario" }) }
+
+        const userFollowers = user.followers;
+
+
+        let f = []
+
+        for (const fo of userFollowers) {
+            const follower = await User.findOne({ _id: fo });
+            f.push({
+                pic: follower.pic === '' ? 'no-profile.jpg' : follower.pic,
+                username: follower.username
+            });
+        }
+
+        return res.status(200).json({ followers: f })
+    } catch (error) {
+
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const getFollows = async (req, res) => {
+    try {
+        const ID = req.body.username;
+
+        const user = await User.findOne({ username: ID })
+
+        if (!user) { return res.status(404).json({ error: "No existe el usuario" }) }
+
+        const userFollowers = user.following;
+
+
+        let f = []
+
+        for (const fo of userFollowers) {
+            const follower = await User.findOne({ _id: fo });
+            f.push({
+                pic: follower.pic === '' ? 'no-profile.jpg' : follower.pic,
+                username: follower.username
+            });
+        }
+
+        return res.status(200).json({ follows: f })
+    } catch (error) {
+
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}

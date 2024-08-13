@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { checkUsername, fetchProfile, getUserPosts, requestFollow, uFollow} from '../utils/fetchers'
+import { checkUsername, fetchProfile, getUserPosts, requestFollow, uFollow } from '../utils/fetchers'
 import LeftSideMenu from '../components/LeftSideMenu'
+import Followers from '../components/Followers'
 import Post from '../components/Post'
 import '../styles/profile.scss'
 
@@ -16,6 +17,8 @@ const Profile = () => {
   const [id, setId] = useState('')
   const [posts, setPosts] = useState({ posts: [] })
   const [isFollower, setIsFollower] = useState(false)
+  const [closeP, setCloseP] = useState(true)
+  const [showF, setShowF] = useState(true)
 
   const [userData, setUserData] = useState({})
 
@@ -23,7 +26,7 @@ const Profile = () => {
     await requestFollow(userData._id, username)
     window.location.reload()
   }
-  
+
   async function unFollow() {
     uFollow(userData._id, username)
     window.location.reload()
@@ -58,7 +61,7 @@ const Profile = () => {
 
     async function gposts() {
       let post = await getUserPosts(username)
-      
+
 
       setPosts(post)
     }
@@ -83,18 +86,32 @@ const Profile = () => {
       if (res.username == username) { setIsPrivate(false); gposts() }
 
       followers.forEach(async (f) => {
-      if (f == userData._id.toString()) {
-        setIsPrivate(false)
-        setIsFollower(true)
-        gposts()
-      }
-    })
+        if (f == userData._id.toString()) {
+          setIsPrivate(false)
+          setIsFollower(true)
+          gposts()
+
+        }
+      })
 
     } getUserByToken()
 
-    
+
   }, [id])
 
+  const showFollowers = () => {
+    setShowF(true)
+    setCloseP(false)
+  }
+
+  const showFollowing = () => {
+    setShowF(false)
+    setCloseP(false)
+  }
+
+  const closePopUp = () => {
+    setCloseP(true)
+  }
 
   return (
     <div className='profileContainer'>
@@ -109,15 +126,18 @@ const Profile = () => {
                 {isVerified ? (<img src="verified.png" alt="" />) : ''}
               </div>
               {
-                username != userData.username ? ( isFollower ? <button onClick={unFollow}>Siguiendo</button> : <button onClick={rFollow}>Seguir</button>) : (<button>Editar</button>)
+                username != userData.username ? (isFollower ? <button onClick={unFollow}>Siguiendo</button> : <button onClick={rFollow}>Seguir</button>) : (<button>Editar</button>)
               }
             </div>
             <p>@{username}</p>
             <h2>{bio}</h2>
           </div>
+          {
+            userData._id !='' && !closeP && !isPrivate? <Followers username={username} follower={showF} unFollow={unFollow} closePopUp={closePopUp}/> : null
+          }
           <div className="userFollow">
-            <p>{followers.length} <strong>followers</strong></p>
-            <p>{follows.length} <strong>followed</strong></p>
+            <p onClick={showFollowers}>{followers.length} <strong>followers</strong></p>
+            <p onClick={showFollowing}>{follows.length} <strong>followed</strong></p>
           </div>
         </div>
         <div className="profilePosts">
@@ -128,18 +148,18 @@ const Profile = () => {
 
               posts.posts != [] ? (
                 posts.posts.reverse()
-                .map((item, idx) => (
-                  <Post
-                    key={idx}
-                    username={username}
-                    profilePic={profilePic}
-                    isVerified={isVerified}
-                    postText={item.textContent}
-                    postImage={item.isImage ? item.image : null}
-                    likes={item.likes}
-                    comments={item.comments.length}
-                  />
-                ))
+                  .map((item, idx) => (
+                    <Post
+                      key={idx}
+                      username={username}
+                      profilePic={profilePic}
+                      isVerified={isVerified}
+                      postText={item.textContent}
+                      postImage={item.isImage ? item.image : null}
+                      likes={item.likes}
+                      comments={item.comments.length}
+                    />
+                  ))
               ) : (<p>Loading posts...</p>)
             ) : (<div className='privateAccount'><img src="lock.png" alt="" /> <p>LA CUENTA ES PRIVADA</p></div>)
           }
