@@ -1,0 +1,92 @@
+.editContainer {
+    background: #353535;
+
+    position: fixed;
+    overflow: auto;
+    width: 75vw;
+    height: 75vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+
+
+    h1 {
+        text-align: center;
+        /* Centrar el título */
+        margin-bottom: 20px;
+        /* Espacio debajo del título */
+        font-size: 1.5em;
+        /* Tamaño de fuente del título */
+        color: #eee;
+        /* Color del texto del título */
+        padding: 10px;
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        
+        button {
+            margin: 20px;
+            color: #eee;
+            background: rgb(0, 124, 255);
+            font-size: 25px;
+            padding: 10px;
+            border-radius: 20px;
+        }
+
+        div {
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+
+            label {
+                font-size: 20px;
+            }
+
+            input {
+                border-bottom: 2px solid #eee;
+                margin-top: 20px;
+                font-size: 20px;
+            }
+        }
+    }
+
+
+
+    .close-btn {
+        position: absolute;
+        /* Posicionar el botón de cerrar */
+        top: 10px;
+        /* Espaciado desde arriba */
+        right: 10px;
+        /* Espaciado desde la derecha */
+        background: #ff5f5f;
+        /* Fondo rojo */
+        color: #fff;
+        /* Texto blanco */
+        border: none;
+        /* Sin borde */
+        border-radius: 50%;
+        /* Forma redonda */
+        width: 30px;
+        /* Ancho del botón */
+        height: 30px;
+        /* Alto del botón */
+        cursor: pointer;
+        /* Cambiar cursor al pasar sobre el botón */
+        font-size: 1.2em;
+        /* Tamaño de fuente del botón */
+        display: flex;
+        /* Usar flexbox */
+        align-items: center;
+        /* Centrar verticalmente */
+        justify-content: center;
+        /* Centrar horizontalmente */
+    }
+}

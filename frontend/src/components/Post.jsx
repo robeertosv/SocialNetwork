@@ -11,11 +11,12 @@ const Post = ({ username, profilePIC, isVerified, postText, postImage, likes, co
     useEffect(() => {
         setIHTML(format(postText))
     }, [])
+
     return (
         <div className="post">
             <div className='postContainer'>
                 <div className="postHeader">
-                    {profilePIC ? (<img src={profilePIC} id='accountPic' />) : <img src='no-profile.jpg' id='accountPic' />}
+                    {profilePIC !='' && profilePIC != 'no-profile.jpg' && profilePIC != null ? (<img src={profilePIC} id='accountPic' />) : <img src='no-profile.jpg' id='accountPic' />}
                     <div className="nameContainer">
                         <a href='roberto'>{username}</a>
                         {isVerified ? (<img src="verified.png" alt="" />) : null}

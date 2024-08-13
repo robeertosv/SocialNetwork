@@ -4,6 +4,7 @@ import LeftSideMenu from '../components/LeftSideMenu'
 import Followers from '../components/Followers'
 import Post from '../components/Post'
 import '../styles/profile.scss'
+import Edit from '../components/Edit'
 
 const Profile = () => {
   const username = window.location.pathname.split('/')[1]
@@ -18,6 +19,7 @@ const Profile = () => {
   const [posts, setPosts] = useState({ posts: [] })
   const [isFollower, setIsFollower] = useState(false)
   const [closeP, setCloseP] = useState(true)
+  const [closeEP, setCloseEP] = useState(true)
   const [showF, setShowF] = useState(true)
 
   const [userData, setUserData] = useState({})
@@ -48,6 +50,7 @@ const Profile = () => {
       setIsVerified(verified)
       setFollowers(seguidores)
       setFollows(seguidos)
+      setProfilePic(pic)
       setIsPrivate(privada)
       setId(id)
       if (!privada) { gposts() }
@@ -56,6 +59,8 @@ const Profile = () => {
 
       if (pic != '') {
         setProfilePic(pic)
+      } else {
+        setProfilePic('no-pic.jpg')
       }
     } getProfileData()
 
@@ -113,27 +118,33 @@ const Profile = () => {
     setCloseP(true)
   }
 
+  const closeEPopUp = () => { setCloseEP(true) }
+  const showEPopUp = () => { setCloseEP(false) }
+
   return (
     <div className='profileContainer'>
       <LeftSideMenu username={userData.username} />
       <div className="profileContent">
         <div className="profileInfo">
           <div className="userInfo">
-            <img src="no-profile.jpg" alt="Account's profile pic" />
+            <img src={profilePic || 'no-profile.jpg'} alt="Account's profile pic" />
             <div className="inline">
               <div className="nameContainer">
                 <h1>{name}</h1>
                 {isVerified ? (<img src="verified.png" alt="" />) : ''}
               </div>
               {
-                username != userData.username ? (isFollower ? <button onClick={unFollow}>Siguiendo</button> : <button onClick={rFollow}>Seguir</button>) : (<button>Editar</button>)
+                username != userData.username ? (isFollower ? <button onClick={unFollow}>Siguiendo</button> : <button onClick={rFollow}>Seguir</button>) : (<button onClick={showEPopUp} >Editar</button>)
               }
             </div>
             <p>@{username}</p>
             <h2>{bio}</h2>
           </div>
           {
-            userData._id !='' && !closeP && !isPrivate? <Followers username={username} follower={showF} unFollow={unFollow} closePopUp={closePopUp}/> : null
+            userData._id != '' && !closeP && !isPrivate ? <Followers username={username} follower={showF} unFollow={unFollow} closePopUp={closePopUp} /> : null
+          }
+          {
+            !closeEP ? <Edit userData={userData} closeEPopUp={closeEPopUp} /> : null
           }
           <div className="userFollow">
             <p onClick={showFollowers}>{followers.length} <strong>followers</strong></p>
@@ -152,7 +163,7 @@ const Profile = () => {
                     <Post
                       key={idx}
                       username={username}
-                      profilePic={profilePic}
+                      profilePIC={profilePic}
                       isVerified={isVerified}
                       postText={item.textContent}
                       postImage={item.isImage ? item.image : null}

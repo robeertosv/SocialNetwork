@@ -1,5 +1,30 @@
 import User from '../models/user.model.js'
 import checkSign from '../utils/checkCookie.js'
+import bcrypt from 'bcrypt'
+import multer from 'multer'
+import fs from 'fs'
+import path from 'path'
+
+const uploadDir = 'uploads/';
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
+
+// Configuración de multer para manejar la subida de archivos con la extensión original
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // Aquí defines el directorio de destino
+    },
+    filename: function (req, file, cb) {
+        // Aquí cambias el nombre del archivo
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const ext = path.extname(file.originalname); // Obtiene la extensión del archivo original
+        const newFilename = file.fieldname + '-' + uniqueSuffix + ext;
+        cb(null, newFilename); // Define el nuevo nombre
+    }
+});
+
+export const upload = multer({ storage: storage });
 
 export const checkUsername = async (req, res) => {
     const { username } = req.body
@@ -173,5 +198,38 @@ export const getFollows = async (req, res) => {
     } catch (error) {
 
         res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+export const updateProfile = async (req, res) => {
+    try {
+        const {id, username, name, email, password, cPassword, bio, isPrivate} = req.body
+        const file = req.file
+        
+        const user = await User.findOne({_id: id})
+
+        if(!user) { return res.status(404).json({ error: "User not found" }) }
+
+
+        await User.findByIdAndUpdate(id, {username, name, email, bio, isPrivate})
+
+        if(password != '') {
+            if(password != cPassword) { return res.status(400).json({ error: 'Las contraseñas deben ser las mismas' }) }
+
+            const salt = await bcrypt.genSalt(10)
+            const hashedPassword = await bcrypt.hash(password, salt)
+
+            await User.findByIdAndUpdate(id, {password: hashedPassword})
+        }
+
+        if(req.file) {
+            let ipath = "http://localhost/images/"+req.file.filename
+            await User.findByIdAndUpdate(id, {pic: ipath})
+        }
+
+        return res.status(200).json({ message: 'modificado' })
+
+    } catch (error) {
+        return res.status(500).json({error: error.message, message: "Ese nombre de usuario ya existe, prueba otro"})
     }
 }
