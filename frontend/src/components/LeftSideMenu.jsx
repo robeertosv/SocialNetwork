@@ -7,12 +7,10 @@ const LeftSideMenu = ({ username }) => {
     <div className='leftSideMenuContainer'>
         <h1><a href="/">Social Network</a></h1>
         <ul>
-            <li><a href="/home">Home</a></li>
-            <li><a href="/home">Home</a></li>
-            <li><a href="/home">Home</a></li>
-            <li><a href="/home">Home</a></li>
-            <li><a href="/home">Home</a></li>
-            <li><a href="/home">Home</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/explore">Explore</a></li>
+            <li><a href="notifications">Notifications</a></li>
+            <li><a href="/?create=new">Create</a></li>
             <li><a href={'/'+username}>{username}</a></li>
         </ul>
     </div>

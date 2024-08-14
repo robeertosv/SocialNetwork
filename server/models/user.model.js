@@ -60,6 +60,12 @@ const schema = mongoose.Schema({
         required: false,
         type: Array,
         default: []
+    },
+
+    notifications: {
+        required: false,
+        type: Array,
+        default: []
     }
 })
 

@@ -92,7 +92,11 @@ export const requestFollow = async (req, res) => {
         }
 
         if (followed.isPrivate) {
-            return res.status(200).json({ error: "Deberás pedir una solicitud" });
+            const fid = followed._id.toString()
+            let notifications = followed.notifications
+            notifications.push({pic: follower.pic, text: `@${follower.username} ha solicitado seguirte`, type: 'request', origin:follower.username})
+            await User.findByIdAndUpdate(fid, {notifications})
+            return res.status(200).json({ error: "Solicitud de seguimiento envíada" });
         } else {
             // Inicializar arrays si están indefinidos
             let followerFollowings = follower.following || [];
@@ -108,6 +112,38 @@ export const requestFollow = async (req, res) => {
 
             return res.status(200).json({ message: 'Os habeis empezado a seguir', followedFollowers, followerFollowings });
         }
+
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+
+export const acceptFollow = async (req, res) => {
+    try {
+        const { id, username } = req.body;
+
+        const follower = await User.findOne({ username });
+        const followed = await User.findOne({ _id: id });
+
+        if (!follower || !followed) {
+            return res.status(404).json({ error: "Usuario no encontrado" });
+        }
+
+
+        // Inicializar arrays si están indefinidos
+        let followerFollowings = follower.following || [];
+        let followedFollowers = followed.followers || [];
+
+        // Agregar los IDs como cadenas de texto
+        followerFollowings.push(followed._id.toString());
+        followedFollowers.push(follower._id.toString());
+
+        // Actualizar los usuarios
+        await User.findByIdAndUpdate(follower._id, { following: followerFollowings });
+        await User.findByIdAndUpdate(followed._id, { followers: followedFollowers });
+
+        return res.status(200).json({ message: 'Os habeis empezado a seguir', followedFollowers, followerFollowings });
+
 
     } catch (error) {
         return res.status(500).json({ error: error.message });
@@ -203,33 +239,39 @@ export const getFollows = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const {id, username, name, email, password, cPassword, bio, isPrivate} = req.body
+        const { id, username, name, email, password, cPassword, bio, isPrivate } = req.body
         const file = req.file
-        
-        const user = await User.findOne({_id: id})
 
-        if(!user) { return res.status(404).json({ error: "User not found" }) }
+        const user = await User.findOne({ _id: id })
+
+        if (!user) { return res.status(404).json({ error: "User not found" }) }
 
 
-        await User.findByIdAndUpdate(id, {username, name, email, bio, isPrivate})
+        await User.findByIdAndUpdate(id, { username, name, email, bio, isPrivate })
 
-        if(password != '') {
-            if(password != cPassword) { return res.status(400).json({ error: 'Las contraseñas deben ser las mismas' }) }
+        if (password != '') {
+            if (password != cPassword) { return res.status(400).json({ error: 'Las contraseñas deben ser las mismas' }) }
 
             const salt = await bcrypt.genSalt(10)
             const hashedPassword = await bcrypt.hash(password, salt)
 
-            await User.findByIdAndUpdate(id, {password: hashedPassword})
+            await User.findByIdAndUpdate(id, { password: hashedPassword })
         }
 
-        if(req.file) {
-            let ipath = "http://localhost/images/"+req.file.filename
-            await User.findByIdAndUpdate(id, {pic: ipath})
+        if (req.file) {
+            let ipath = "http://localhost/images/" + req.file.filename
+            await User.findByIdAndUpdate(id, { pic: ipath })
         }
 
         return res.status(200).json({ message: 'modificado' })
 
     } catch (error) {
-        return res.status(500).json({error: error.message, message: "Ese nombre de usuario ya existe, prueba otro"})
+        return res.status(500).json({ error: error.message, message: "Ese nombre de usuario ya existe, prueba otro" })
     }
+}
+
+export const getNotifications = async (req, res) => {
+    let user = req.cookies.sessionToken
+    user = await checkSign(req, res)
+    return res.status(200).json({ username: user.username, notifications: user.notifications })
 }
