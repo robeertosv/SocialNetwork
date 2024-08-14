@@ -94,8 +94,8 @@ export const requestFollow = async (req, res) => {
         if (followed.isPrivate) {
             const fid = followed._id.toString()
             let notifications = followed.notifications
-            notifications.push({pic: follower.pic, text: `@${follower.username} ha solicitado seguirte`, type: 'request', origin:follower.username})
-            await User.findByIdAndUpdate(fid, {notifications})
+            notifications.push({ pic: follower.pic, text: `@${follower.username} ha solicitado seguirte`, type: 'request', origin: follower.username })
+            await User.findByIdAndUpdate(fid, { notifications })
             return res.status(200).json({ error: "Solicitud de seguimiento envíada" });
         } else {
             // Inicializar arrays si están indefinidos
@@ -109,6 +109,10 @@ export const requestFollow = async (req, res) => {
             // Actualizar los usuarios
             await User.findByIdAndUpdate(follower._id, { following: followerFollowings });
             await User.findByIdAndUpdate(followed._id, { followers: followedFollowers });
+
+            let notifications = followed.notifications
+            notifications.push({ pic: follower.pic, text: `@${follower.username} ha comenzado a seguirte`, type: 'newFollow', origin: follower.username })
+            await User.findByIdAndUpdate(followed._id, { notifications })
 
             return res.status(200).json({ message: 'Os habeis empezado a seguir', followedFollowers, followerFollowings });
         }
@@ -141,6 +145,10 @@ export const acceptFollow = async (req, res) => {
         // Actualizar los usuarios
         await User.findByIdAndUpdate(follower._id, { following: followerFollowings });
         await User.findByIdAndUpdate(followed._id, { followers: followedFollowers });
+
+        let notifications = followed.notifications
+        notifications.push({ pic: follower.pic, text: `@${follower.username} ha comenzado a seguirte`, type: 'newFollow', origin: follower.username })
+        await User.findByIdAndUpdate(followed._id, { notifications })
 
         return res.status(200).json({ message: 'Os habeis empezado a seguir', followedFollowers, followerFollowings });
 

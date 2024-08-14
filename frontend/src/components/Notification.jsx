@@ -37,7 +37,7 @@ const Notification = ({ username, img, text, post, tipo, origin }) => {
     return (
         <div className='notificationContainer'>
             <div>
-                <img src={img} />
+                <img src={img == '' ? 'no-profile.jpg' : img} />
                 <p dangerouslySetInnerHTML={{ __html: formatText(text) }}></p>
             </div>
             {(type == 'request' ? <button onClick={acceptFollow}>Confirmar</button> : (type == 'newFollow' ? <button onClick={changeURL}>Ver cuenta</button> : <button onClick={changeURL}>Ver post</button>))}
