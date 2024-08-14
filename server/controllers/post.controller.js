@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 import Post from '../models/post.model.js'
+import User from '../models/user.model.js'
 
 // Crear el directorio 'uploads/' si no existe
 const uploadDir = 'uploads/';
@@ -36,7 +37,7 @@ export const create = async (req, res) => {
         const post = await new Post({
             ownerId: req.body.ownerId,
             isImage: req.file ? true : false,
-            image: req.file ? 'http://localhost/images/'+req.file.filename : null,
+            image: req.file ? 'http://localhost/images/' + req.file.filename : null,
             textContent: req.body ? req.body.post : null,
             date: Date.now(),
 
@@ -60,5 +61,22 @@ export const allPostUID = async (req, res) => {
         return res.status(200).json({ posts })
     } catch (error) {
         return res.status(500).json({ error: error.message })
+    }
+}
+
+export const getByID = async (req, res) => {
+    try {
+        const { id } = req.body
+        const post = await Post.findOne({ _id: id })
+
+        if (!post) { return res.status(404).json({ error: 'No existe el post', code: 404 }) }
+
+        const owner = await User.findOne({ _id: post.ownerId })
+
+        //username, profilePIC, isVerified, postText, postImage, likes, comments
+
+        return res.status(200).json({username: owner.username, pic: owner.pic, isVerified: owner.isVerified, postText: post.textContent, image: post.image, likes: post.likes, comments:post.comments})
+    } catch (error) {
+        return res.status(500).json({ error: error.message, code: 500 })
     }
 }

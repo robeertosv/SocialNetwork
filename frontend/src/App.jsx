@@ -6,6 +6,7 @@ import Settings from './pages/Settings'
 import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import Notifications from './pages/Notifications'
+import Posts from './pages/Posts'
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
                 <Route path='/register' element={<Register />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/settings' element={<Settings />} />
+                <Route path='/posts/*' element={<Posts />} />
                 <Route path='/notifications' element={<Notifications />} />
                 <Route path='*' element={<Profile/>}/>
                 <Route path='/images/*' element={null}/>

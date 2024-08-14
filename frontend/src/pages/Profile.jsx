@@ -70,6 +70,7 @@ const Profile = () => {
 
       setPosts(post)
     }
+    
 
     async function getUserByToken() {
       let headers = new Headers()
@@ -161,6 +162,7 @@ const Profile = () => {
                 posts.posts.reverse()
                   .map((item, idx) => (
                     <Post
+                      id={item._id}
                       key={idx}
                       username={username}
                       profilePIC={profilePic}

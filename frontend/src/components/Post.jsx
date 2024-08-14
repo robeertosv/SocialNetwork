@@ -1,24 +1,25 @@
 import { useEffect, useState } from 'react';
 import './styles/post.scss'
 
-const Post = ({ username, profilePIC, isVerified, postText, postImage, likes, comments }) => {
+const Post = ({ id, username, profilePIC, isVerified, postText, postImage, likes, comments }) => {
     const [iHTML, setIHTML] = useState()
 
     function format(text) {
-        return (text.replace(/#(\w+)/g, '<a href="/tags/$1">#$1</a>').replace(/@(\w+)/g, '<a href="/$1">@$1</a>'))
+        if(postText) { return (text.replace(/#(\w+)/g, '<a href="/tags/$1">#$1</a>').replace(/@(\w+)/g, '<a href="/$1">@$1</a>')) }
     }
 
     useEffect(() => {
         setIHTML(format(postText))
-    }, [])
+    }, [postText])
 
+    function viewMore() { window.location.replace('/posts/'+id) }
     return (
         <div className="post">
-            <div className='postContainer'>
+            <div className='postContainer' onClick={viewMore}>
                 <div className="postHeader">
                     {profilePIC !='' && profilePIC != 'no-profile.jpg' && profilePIC != null ? (<img src={profilePIC} id='accountPic' />) : <img src='no-profile.jpg' id='accountPic' />}
                     <div className="nameContainer">
-                        <a href='roberto'>{username}</a>
+                        <a href={'http://localhost:9000/'+username}>{username}</a>
                         {isVerified ? (<img src="verified.png" alt="" />) : null}
                     </div>
                 </div>

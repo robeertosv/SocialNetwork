@@ -19,6 +19,13 @@ export const checkUsername = async (username) => {
     return await res.exist
 }
 
+export const checkPost = async (id) => {
+    let body = JSON.stringify({id})
+    let res = await fetch('http://localhost/api/posts/getByID', {headers, body, method:'POST', redirect:'follow'})
+    res = await res.json()
+    return res
+}
+
 export const fetchProfile = async (username) => {
     let body = JSON.stringify({ username })
     let options = {
