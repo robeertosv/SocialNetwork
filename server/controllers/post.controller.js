@@ -4,6 +4,7 @@ import fs from 'fs';
 
 import Post from '../models/post.model.js'
 import User from '../models/user.model.js'
+import checkSign from '../utils/checkCookie.js'
 
 // Crear el directorio 'uploads/' si no existe
 const uploadDir = 'uploads/';
@@ -75,8 +76,48 @@ export const getByID = async (req, res) => {
 
         //username, profilePIC, isVerified, postText, postImage, likes, comments
 
-        return res.status(200).json({username: owner.username, pic: owner.pic, isVerified: owner.isVerified, postText: post.textContent, image: post.image, likes: post.likes, comments:post.comments})
+        return res.status(200).json({ username: owner.username, pic: owner.pic, isVerified: owner.isVerified, postText: post.textContent, image: post.image, likes: post.likes, comments: post.comments })
     } catch (error) {
         return res.status(500).json({ error: error.message, code: 500 })
     }
+}
+
+export const comment = async (req, res) => {
+    try {
+        const { comment, post } = req.body
+        
+        const user = await checkSign(req)
+
+        const p = await Post.findOne({ _id: post })
+        if(!p) { return res.status(404).json({error: "No existe ese post"}) }
+
+        let postComments = p.comments
+
+        postComments.push({ user, comment })
+
+        await Post.findByIdAndUpdate(post, { comments: postComments })
+
+        return res.status(200).json({ message: 'OK' })
+
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
+    }
+
+}
+
+export const getComments = async (req, res) => {
+    try {
+        const {id} = req.body
+        const post = await Post.findOne({_id: id})
+
+        if(!post) { return res.status(404).json({error: 'No existe ese post'}) }
+
+        const comments = post.comments
+
+        return res.status(200).json(comments)
+    
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
+    }
+
 }

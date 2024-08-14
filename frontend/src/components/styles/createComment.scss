@@ -1,0 +1,25 @@
+.createCommentContainer{
+    border: 1px solid aqua;
+    padding: 10px;
+    margin: 10px 0;
+
+    form {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        input {
+            border-bottom: 2px solid #eee;
+            font-size: 20px;
+            width: 50vw;
+            margin: 20px;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 5px;
+            border-radius: 20px;
+            background-color: rgb(0, 124, 255);
+        }
+    }
+}
