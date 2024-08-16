@@ -56,13 +56,14 @@ const Create = ({uid}) => {
         try {
             const response = await fetch('http://localhost/api/posts/create', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                credentials: 'include'
             });
 
             if (response.ok) {
                 // Manejar la respuesta exitosa
                 console.log('Post creado exitosamente');
-                window.location.reload()
+                //window.location.reload()
             } else {
                 // Manejar errores
                 console.error('Error al crear el post');
@@ -90,7 +91,6 @@ const Create = ({uid}) => {
                         <img src={previewImage} id='imgPreview' />
                         <button onClick={deleteImage} id='closePreviewBtn'>X</button>
                     </div>
-                    <input type="text" name='ownerId' value={uid} contentEditable={false} id='ownerID'/>
                     <textarea id="postText" placeholder='Escribe algo' name='post' cols="30" rows="1" maxLength={200} onChange={changeLength} value={postText}></textarea>
                     <p>{postLength}/200</p>
                     <div

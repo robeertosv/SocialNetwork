@@ -35,8 +35,11 @@ export const create = async (req, res) => {
             return res.status(400).json({ error: 'Not a valid post' })
         }
 
+        const user = await checkSign(req)
+        const ownerId = user._id
+        
         const post = await new Post({
-            ownerId: req.body.ownerId,
+            ownerId,
             isImage: req.file ? true : false,
             image: req.file ? 'http://localhost/images/' + req.file.filename : null,
             textContent: req.body ? req.body.post : null,
@@ -47,7 +50,7 @@ export const create = async (req, res) => {
         await post.save()
 
         // Responder con un mensaje de éxito
-        return res.status(200).json({ message: 'Datos recibidos correctamente' });
+        return res.status(200).json({ message: 'Datos recibidos correctamente'});
     } catch (err) {
         return res.status(500).json({ error: err.message })
     }
