@@ -37,7 +37,7 @@ export const create = async (req, res) => {
 
         const user = await checkSign(req)
         const ownerId = user._id
-        
+
         const post = await new Post({
             ownerId,
             isImage: req.file ? true : false,
@@ -50,7 +50,7 @@ export const create = async (req, res) => {
         await post.save()
 
         // Responder con un mensaje de éxito
-        return res.status(200).json({ message: 'Datos recibidos correctamente'});
+        return res.status(200).json({ message: 'Datos recibidos correctamente' });
     } catch (err) {
         return res.status(500).json({ error: err.message })
     }
@@ -88,11 +88,11 @@ export const getByID = async (req, res) => {
 export const comment = async (req, res) => {
     try {
         const { comment, post } = req.body
-        
+
         const user = await checkSign(req)
 
         const p = await Post.findOne({ _id: post })
-        if(!p) { return res.status(404).json({error: "No existe ese post"}) }
+        if (!p) { return res.status(404).json({ error: "No existe ese post" }) }
 
         let postComments = p.comments
 
@@ -110,17 +110,37 @@ export const comment = async (req, res) => {
 
 export const getComments = async (req, res) => {
     try {
-        const {id} = req.body
-        const post = await Post.findOne({_id: id})
+        const { id } = req.body
+        const post = await Post.findOne({ _id: id })
 
-        if(!post) { return res.status(404).json({error: 'No existe ese post'}) }
+        if (!post) { return res.status(404).json({ error: 'No existe ese post' }) }
 
         const comments = post.comments
 
         return res.status(200).json(comments)
-    
+
     } catch (error) {
         return res.status(500).json({ error: error.message })
     }
 
+}
+
+export const deletePost = async (req, res) => {
+    try {
+        const { postID } = req.body
+        const user = await checkSign(req)
+        const ownerId = user._id
+
+        const post = await Post.findOne({ _id: postID })
+
+        if (!post) { return res.status(404).json({ error: 'El post no existe' }) }
+
+        if(ownerId != post.ownerId) { return res.status(403).json({error: 'Este usuario no puede eliminar el post'}) } // Y si es un admin banneando?
+
+        await Post.deleteOne({ _id: post._id, ownerId})
+
+        return res.status(200).json({message: 'Post eliminado'})
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
+    }
 }
