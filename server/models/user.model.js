@@ -55,13 +55,7 @@ const schema = mongoose.Schema({
         type: Array,
         default: []
     },
-    // Array con el postID
-    posts: {
-        required: false,
-        type: Array,
-        default: []
-    },
-
+    
     notifications: {
         required: false,
         type: Array,

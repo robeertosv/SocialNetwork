@@ -24,8 +24,8 @@ const schema = mongoose.Schema({
     },
     likes: {
         required: false,
-        type: Number,
-        default: 0
+        type: Array,
+        default: []
     },
     comments: {
         required: false,

@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { FaHeart, FaRegComment, FaEllipsisVertical } from "react-icons/fa6";
 import './styles/post.scss'
 
-const Post = ({ id, username, profilePIC, isVerified, postText, postImage, likes, comments }) => {
+const Post = ({ id, ownerID, viewerID, username, profilePIC, isVerified, postText, postImage, likes, comments }) => {
     const [iHTML, setIHTML] = useState()
     const [showOptions, setShowOptions] = useState(false)
+    const [liked, setLiked] = useState(false)
 
     function format(text) {
         if (postText) { return (text.replace(/#(\w+)/g, '<a href="/tags/$1">#$1</a>').replace(/@(\w+)/g, '<a href="/$1">@$1</a>')) }
@@ -24,8 +25,26 @@ const Post = ({ id, username, profilePIC, isVerified, postText, postImage, likes
         if (res.error) { alert(res.error) } else { window.location.reload() }
     }
 
+    const likeHandler = async () => {
+        let headers = new Headers()
+        headers.append('Content-Type', 'application/json')
+        let body = JSON.stringify({id, liked})
+
+        let res = await fetch('http://localhost/api/posts/like', {headers, body, method:'POST', credentials:'include', redirect: 'follow'})
+        res = await res.json()
+
+        if(res.error) {  
+            alert(res.error)
+        }else {
+            window.location.reload()
+        }
+    }
+
     useEffect(() => {
         setIHTML(format(postText))
+        likes.forEach((like) => {
+            if(viewerID == like) { setLiked(true) }
+        })
     }, [postText])
 
     function viewMore() {
@@ -43,7 +62,8 @@ const Post = ({ id, username, profilePIC, isVerified, postText, postImage, likes
                         </div>
                     </div>
                     <div className="postOptions">
-                        <button onClick={showPostOptions} id='showMoreOptionsBTN'><FaEllipsisVertical  /></button>
+                        {ownerID == viewerID ? <button onClick={showPostOptions} id='showMoreOptionsBTN'><FaEllipsisVertical /></button> : null}
+                        
                         {
                             showOptions ? (<div className="optionsContainer">
                                 <ul>
@@ -58,11 +78,11 @@ const Post = ({ id, username, profilePIC, isVerified, postText, postImage, likes
                     {postImage ? (<img src={postImage} />) : null}
                 </div>
                 <div className="postStats" onClick={viewMore}>
-                    <p>{likes} likes</p>
+                    <p>{likes.length} likes</p>
                     <p>{comments} comments</p>
                 </div>
                 <div className="postFooter" onClick={viewMore}>
-                    <button><FaHeart /></button>
+                    <button onClick={likeHandler}><FaHeart fill={liked ? 'red' : '#eee'} /></button>
                     <button><FaRegComment /></button>
                 </div>
             </div>

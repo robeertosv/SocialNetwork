@@ -153,7 +153,6 @@ const Profile = () => {
           </div>
         </div>
         <div className="profilePosts">
-
           {
             // TODO: Permitir acceso si la cuenta es publica o si el usuario loggeado sigue a la cuenta
             (isPrivate == false) ? (
@@ -163,6 +162,8 @@ const Profile = () => {
                   .map((item, idx) => (
                     <Post
                       id={item._id}
+                      ownerID={item.ownerId}
+                      viewerID={userData._id}
                       key={idx}
                       username={username}
                       profilePIC={profilePic}

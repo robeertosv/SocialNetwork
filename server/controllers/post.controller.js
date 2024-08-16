@@ -144,3 +144,31 @@ export const deletePost = async (req, res) => {
         return res.status(500).json({ error: error.message })
     }
 }
+
+export const like = async (req, res) => {
+    try {
+        const {id, liked} = req.body
+        
+        const uid = await checkSign(req)
+
+        const post = await Post.findOne({_id: id})
+
+        if(!post) { return res.status(404).json({error: 'No existe ese post'}) }
+        const likes = post.likes
+
+        if(liked) {
+            const fl = likes.filter(f => f.toString() !== uid._id.toString());
+            
+            await Post.findByIdAndUpdate(id, {likes: fl})
+        }else {
+            let f = likes
+            f.push(uid._id)
+            await Post.findByIdAndUpdate(id, {likes: f})
+            
+        }
+
+        return res.status(200).json({message: liked? 'unliked' : 'liked'})
+    } catch (error) {
+        return res.status(500).json({error: error.message})
+    }
+}
