@@ -31,7 +31,6 @@ const Posts = () => {
             <LeftSideMenu username={'roberto'} />
             <div className="content">
                 <div className="post">
-                
                     {
                        post.username ? <Post id={postID} username={post.username} profilePIC={post.pic} isVerified={post.isVerified} postText={post.postText} postImage={post.image} likes={post.likes} comments={post.comments.length}/> : null
                     }
