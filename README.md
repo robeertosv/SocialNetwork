@@ -10,11 +10,12 @@
     -   Seguir cuentas
     -   Solicitud de seguimiento a cuentas privadas
     -   Ver seguidores y seguidos de otras cuentas
+    -   Añadir comentarios
 
 # Por hacer
 
     -   Eliminar posts
-    -   Like y comentarios en los posts
+    -   Like en los posts
     -   Eliminar cuentas
     -   Admin panel (banear / verificar cuentas)
 
