@@ -12,12 +12,12 @@
     -   Ver seguidores y seguidos de otras cuentas
     -   Añadir comentarios
     -   Eliminar posts
+    -   Añadir iconos
 
 # Por hacer
-
-    -   Añadir iconos
     -   Like en los posts
     -   Admin panel (banear / verificar cuentas)
+    -   Feed (Mostrar los posts de las cuentas que sigues ordenados por fecha, paginación de resultados, o mostrar los posts de las cuentas que sigues o publicas que contengan una palabra o hashtag)
 
 # Instalación y uso
 
