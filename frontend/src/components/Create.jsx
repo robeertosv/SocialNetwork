@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { FaFileImage } from "react-icons/fa6";
 import './styles/create.scss'
 
 const Create = ({uid}) => {
@@ -99,7 +100,7 @@ const Create = ({uid}) => {
                     ></div>
                 </div>
                 <div className="tools">
-                    <label id="addImage" htmlFor='image'>Image<input onChange={changePreviewImage} type="file" name="image" id="image" accept="image/*" /></label>
+                    <label id="addImage" htmlFor='image'><FaFileImage /><input onChange={changePreviewImage} type="file" name="image" id="image" accept="image/*" /></label>
                     <button id="send" type="submit">Post</button>
                 </div>
             </form>

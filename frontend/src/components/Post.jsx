@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { FaHeart, FaRegComment, FaEllipsisVertical } from "react-icons/fa6";
 import './styles/post.scss'
 
 const Post = ({ id, username, profilePIC, isVerified, postText, postImage, likes, comments }) => {
@@ -11,16 +12,16 @@ const Post = ({ id, username, profilePIC, isVerified, postText, postImage, likes
 
     function showPostOptions() { setShowOptions(!showOptions) }
 
-    const deletePostHanlder = async() => {
+    const deletePostHanlder = async () => {
         let headers = new Headers()
         headers.append('Content-Type', 'application/json')
 
         let body = JSON.stringify({ postID: id })
 
-        let res = await fetch('http://localhost/api/posts/delete', {headers, body, method:'POST', credentials: 'include', redirect: 'follow'})
+        let res = await fetch('http://localhost/api/posts/delete', { headers, body, method: 'POST', credentials: 'include', redirect: 'follow' })
         res = await res.json()
-        
-        if(res.error) { alert(res.error) } else { window.location.reload() }
+
+        if (res.error) { alert(res.error) } else { window.location.reload() }
     }
 
     useEffect(() => {
@@ -42,10 +43,10 @@ const Post = ({ id, username, profilePIC, isVerified, postText, postImage, likes
                         </div>
                     </div>
                     <div className="postOptions">
-                        <button onClick={showPostOptions}>more</button>
+                        <button onClick={showPostOptions} id='showMoreOptionsBTN'><FaEllipsisVertical  /></button>
                         {
                             showOptions ? (<div className="optionsContainer">
-                                <ul> 
+                                <ul>
                                     <li><button onClick={deletePostHanlder}>Eliminar</button></li>
                                 </ul>
                             </div>) : null
@@ -61,8 +62,8 @@ const Post = ({ id, username, profilePIC, isVerified, postText, postImage, likes
                     <p>{comments} comments</p>
                 </div>
                 <div className="postFooter" onClick={viewMore}>
-                    <button>LIKE</button>
-                    <button>COMM</button>
+                    <button><FaHeart /></button>
+                    <button><FaRegComment /></button>
                 </div>
             </div>
         </div>
