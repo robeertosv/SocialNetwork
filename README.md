@@ -14,10 +14,10 @@
     -   Eliminar posts
     -   Añadir iconos
     -   Like en los posts
+    -   Feed (Mostrar los posts de las cuentas que sigues ordenados por fecha, paginación de resultados, o mostrar los posts de las cuentas que sigues o publicas que contengan una palabra o hashtag)
 
 # Por hacer
     -   Admin panel (banear / verificar cuentas)
-    -   Feed (Mostrar los posts de las cuentas que sigues ordenados por fecha, paginación de resultados, o mostrar los posts de las cuentas que sigues o publicas que contengan una palabra o hashtag)
 
 # Instalación y uso
 
