@@ -283,3 +283,30 @@ export const getNotifications = async (req, res) => {
     user = await checkSign(req, res)
     return res.status(200).json({ username: user.username, notifications: user.notifications })
 }
+
+export const getUserProfileByID = async (id) => {
+    try {
+        
+
+        const user = await User.findOne({ _id: id })
+
+        if (!user) { return res.status(404).json({ error: 'nouser', errorMessage: "El usuario no existe" }) }
+
+        const result = {
+            id: user._id.toString(),
+            username: user.username,
+            name: user.name,
+            bio: user.bio,
+            pic: user.pic,
+            verified: user.isVerfied,
+            private: user.isPrivate,
+            seguidores: user.followers,
+            seguidos: user.following,
+            banned: user.isBanned
+        }
+
+        return result
+    } catch (error) {
+        return error
+    }
+}

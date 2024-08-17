@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import { configDotenv } from 'dotenv'
 import path from 'path'
+import fs from 'fs'
+import https from 'https'
 
 import connectDB from './db/connectDB.js'
 import authRouter from './routes/auth.routes.js'
@@ -33,6 +35,11 @@ app.use('/images', fileRouter)
 
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../frontend/dist/index.html')))
 
+/*https.createServer({
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
+    passphrase: 'RobertoAuthServices'
+}, app).listen(3000, connectDB())*/
 
 app.listen(port, () => {
     connectDB()

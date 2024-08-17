@@ -1,5 +1,5 @@
 import express from 'express';
-import { upload, comment, getComments, create, allPostUID, getByID, deletePost, like} from '../controllers/post.controller.js';
+import { upload, comment, feed, getComments, create, allPostUID, getByID, deletePost, like} from '../controllers/post.controller.js';
 
 const router = express.Router();
 
@@ -11,5 +11,6 @@ router.post('/comment', comment)
 router.post('/getComments', getComments)
 router.post('/delete', deletePost)
 router.post('/like', like)
+router.get('/feed', feed)
 
 export default router;

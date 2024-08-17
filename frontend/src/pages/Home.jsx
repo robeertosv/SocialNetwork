@@ -25,7 +25,6 @@ const Home = () => {
 
             setUserData(res)
         } getUserByToken()
-        console.log(userData)
     }, [])
 
     return (

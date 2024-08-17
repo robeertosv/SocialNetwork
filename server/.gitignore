@@ -1,3 +1,6 @@
 node_modules
 .env
+.rnd
+cert.pem
+key.pem
 uploads/*
