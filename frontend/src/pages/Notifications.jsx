@@ -28,7 +28,7 @@ const Notifications = () => {
                     {
                     
                         user.notifications ?
-                        user.notifications.map((item, idx) => {
+                        user.notifications.reverse().map((item, idx) => {
                             return (<li key={idx}><Notification username={user.username}  img={item.pic} text={item.text} tipo={item.type} origin={item.origin} /></li>)
                         })
                             : null

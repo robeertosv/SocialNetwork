@@ -15,10 +15,10 @@
     -   Añadir iconos
     -   Like en los posts
     -   Feed (Mostrar los posts de las cuentas que sigues ordenados por fecha, paginación de resultados, o mostrar los posts de las cuentas que sigues o publicas que contengan una palabra o hashtag)
+    -   Admin panel (banear / verificar cuentas) (Necesario crear una cuenta @admin)
 
 # Por hacer
-    -   Admin panel (banear / verificar cuentas)
-
+    -   Si el usuario esta banneado que no pueda acceder a la app, y que su perfil no pueda ser visible
 # Instalación y uso
 
 ## Requisitos

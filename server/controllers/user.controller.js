@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 import multer from 'multer'
 import fs from 'fs'
 import path from 'path'
+import { error } from 'console'
 
 const uploadDir = 'uploads/';
 if (!fs.existsSync(uploadDir)) {
@@ -48,6 +49,7 @@ export const getUserProfile = async (req, res) => {
 
         const result = {
             id: user._id.toString(),
+            username: user.username,
             name: user.name,
             bio: user.bio,
             pic: user.pic,
@@ -286,7 +288,6 @@ export const getNotifications = async (req, res) => {
 
 export const getUserProfileByID = async (id) => {
     try {
-        
 
         const user = await User.findOne({ _id: id })
 
@@ -308,5 +309,38 @@ export const getUserProfileByID = async (id) => {
         return result
     } catch (error) {
         return error
+    }
+}
+
+export const getUser = async (req, res) => {
+    try {
+        const user = await checkSign(req)
+        return res.status(200).json(user)
+    } catch (error) {
+        return res.status(500).json({error: error.message})
+    }
+}
+
+export const adminUpdate = async (req, res) => {
+    try {
+        let admin = await checkSign(req)
+        const { username, verified, banned } = req.body
+        
+        admin = admin.username
+
+        if(admin != 'admin') { return res.status(401).json({error: "Este usuario no es admin"}) }
+
+        const user = await User.findOne({username})
+        const uid = user._id
+
+        console.log(uid, verified, banned, username)
+
+        if(!user) { return res.status(404).json({error: 'No existe ese usuario'}) }
+
+        await User.findByIdAndUpdate(uid, {isVerfied: verified, isBanned:banned})
+
+        return res.status(200).json({message: 'OK', user: user.username})
+    } catch (error) {
+        return res.status(500).json({error: error.message})
     }
 }

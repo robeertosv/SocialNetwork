@@ -8,6 +8,7 @@ import NotFound from './pages/NotFound'
 import Notifications from './pages/Notifications'
 import Posts from './pages/Posts'
 import Explore from './pages/Explore'
+import Admin from './pages/Admin'
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
             <Routes>
                 <Route index element={<Home />} />
                 <Route path='/register' element={<Register />} />
+                <Route path='/admin' element={<Admin />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/settings' element={<Settings />} />
                 <Route path='/posts/*' element={<Posts />} />

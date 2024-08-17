@@ -1,0 +1,38 @@
+.adminPanelContainer {
+    background: #353535;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+
+    .adminPanel{
+        border-left: 2px solid #eee;
+        padding: 20px;
+
+        button {
+            padding: 10px;
+            border-radius: 20px;
+            background: rgb(0, 124,255);
+            font-size: 20px;
+            margin: 20px 0;
+        }
+
+        .searchUser{
+            background-color: #eee;
+            border-radius: 20px;
+            padding: 10px;
+            input {
+                font-size: 25px;
+                border-bottom: 2px solid rgb(0, 124,255);
+                padding: 5px;
+                color: #353535;
+            }
+        }
+
+        .userData {
+            img {
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+            }
+        }
+    }   
+}
