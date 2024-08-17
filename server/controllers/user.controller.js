@@ -249,7 +249,7 @@ export const getFollows = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const { id, username, name, email, password, cPassword, bio, isPrivate } = req.body
+        const { id, username, name, email, password, cPassword, bio, iprivate } = req.body
         const file = req.file
 
         const user = await User.findOne({ _id: id })
@@ -257,7 +257,7 @@ export const updateProfile = async (req, res) => {
         if (!user) { return res.status(404).json({ error: "User not found" }) }
 
 
-        await User.findByIdAndUpdate(id, { username, name, email, bio, isPrivate })
+        await User.findByIdAndUpdate(id, { username, name, email, bio, isPrivate: iprivate })
 
         if (password != '') {
             if (password != cPassword) { return res.status(400).json({ error: 'Las contraseñas deben ser las mismas' }) }

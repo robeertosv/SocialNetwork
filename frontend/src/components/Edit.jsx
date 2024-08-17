@@ -9,6 +9,7 @@ const Edit = ({ userData, closeEPopUp }) => {
 
         let formData = new FormData(e.target);
         formData.append('id', userData._id)
+        formData.append('iprivate', document.querySelector('#private').checked)
         const options = { body:formData, method:'POST', redirect: 'follow' }
 
         let res = await fetch('http://localhost/api/users/updateProfile', options)
@@ -58,7 +59,7 @@ const Edit = ({ userData, closeEPopUp }) => {
                 </div>
                 <div>
                     <label htmlFor="private">Cuenta privada</label>
-                    <input type="checkbox" name='private' id='private' defaultValue={userData.isPrivate} />
+                    <input type="checkbox" name='private' id='private' defaultChecked={userData.isPrivate} />
                 </div>
 
                 <button type='submit'>Confirmar cambios</button>
