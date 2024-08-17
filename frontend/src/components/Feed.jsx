@@ -9,6 +9,7 @@ const Feed = () => {
   const [hasMore, setHasMore] = useState(true);
   const [VID, setVID] = useState(null);
 
+
   useEffect(() => {
     loadPosts(page);
   }, [page]);
@@ -16,7 +17,7 @@ const Feed = () => {
   const loadPosts = async (page) => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost/api/posts/feed?page=${page}&limit=3&home=true`, { credentials: 'include' });
+      const response = await fetch(`http://localhost/api/posts/feed?page=${page}&limit=3`, { credentials: 'include' });
       let res = await response.json();
       let newPosts = res.posts;
 

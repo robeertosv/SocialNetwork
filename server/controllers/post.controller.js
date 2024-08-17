@@ -177,35 +177,45 @@ export const like = async (req, res) => {
 export const feed = async (req, res) => {
     try {
         let userId = await checkSign(req); // Suponiendo que tienes autenticación y puedes obtener el ID del usuario
-        userId = userId._id
+        userId = userId._id;
 
         const user = await User.findOne(userId).populate('following');
+        if (!user) { 
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
 
-        if (!user) { return res.status(404).json({ error: 'Usuario no encontrado' }) }
+        const followingIds = user.following;
+        const { page = 1, limit = 10, keyword = '', method = 'recent' } = req.query; // Recibe la página, límite, keyword y método desde el frontend
 
-        const followingIds = user.following
-
-        const { page = 1, limit = 10 } = req.query; // Recibe la página y el límite desde el frontend
-
-        let posts = await Post.find({
+        // Construir la query de búsqueda
+        let query = {
             $or: [
                 { ownerId: { $in: followingIds } },
                 { ownerId: { $nin: followingIds }, isPublic: true }
             ]
-        })
-            .sort({ date: -1 }) // Ordenar por fecha descendente
+        };
+
+        // Si hay una keyword, agregarla a la query
+        if (keyword) {
+            query.$or.push({ textContent: { $regex: keyword, $options: 'i' } });
+        }
+
+        // Configurar el criterio de ordenamiento
+        let sortCriteria = { date: -1 }; // Por defecto, ordenar por fecha descendente (más reciente)
+        if (method === 'popular') {
+            sortCriteria = { likes: -1 }; // Ordenar por popularidad (más likes)
+        }
+
+        let posts = await Post.find(query)
+            .sort(sortCriteria) // Aplicar el criterio de ordenamiento
             .skip((page - 1) * limit) // Saltar posts ya cargados
             .limit(parseInt(limit)); // Limitar la cantidad de posts obtenidos
 
-        
-            let p = await Promise.all(posts.map(async (post) => {
-                let e = await getUserProfileByID(post.ownerId);
-                
-                let u = { username: e.username, pic: e.pic, isVerified: e.verified };
-                console.log(u)
-                return { post, u };
-            }));
-
+        let p = await Promise.all(posts.map(async (post) => {
+            let e = await getUserProfileByID(post.ownerId);
+            let u = { username: e.username, pic: e.pic, isVerified: e.verified };
+            return { post, u };
+        }));
 
         return res.status(200).json({ posts: p, user: user._id });
     } catch (error) {

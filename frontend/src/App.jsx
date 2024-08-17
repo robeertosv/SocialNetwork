@@ -7,6 +7,7 @@ import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import Notifications from './pages/Notifications'
 import Posts from './pages/Posts'
+import Explore from './pages/Explore'
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
                 <Route path='*' element={<Profile/>}/>
                 <Route path='/images/*' element={null}/>
                 <Route path='404' element={<NotFound/>}/>
+                <Route path='/explore' element={<Explore/>}/>
             </Routes>
         </BrowserRouter>
   )

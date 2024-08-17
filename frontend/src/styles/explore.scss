@@ -1,0 +1,48 @@
+.exploreContainer {
+    background: #353535;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+
+    .exploreContent {
+        border-left: 2px solid #eee;
+
+        h1 {
+            margin: 20px;
+        }
+
+        .filters {
+            
+            padding: 20px;
+            border: 2px solid #eee;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            input {
+                border-bottom: 2px solid #eee;
+                font-size: 20px;
+                padding: 2px;
+            }
+
+            select {
+                color: #353535;
+                font-size: 20px;
+                padding: 5px;
+                cursor: pointer;
+                border-radius: 20px;
+
+                option {
+                    color: #353535;
+                }
+            }
+        }
+
+        .results {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+    }
+}

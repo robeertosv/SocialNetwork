@@ -8,7 +8,7 @@ const Post = ({ id, ownerID, viewerID, username, profilePIC, isVerified, postTex
     const [liked, setLiked] = useState(false)
 
     function format(text) {
-        if (postText) { return (text.replace(/#(\w+)/g, '<a href="/tags/$1">#$1</a>').replace(/@(\w+)/g, '<a href="/$1">@$1</a>')) }
+        if (postText) { return (text.replace(/#(\w+)/g, '<a href="/explore?keyword=$1&src=postClick">#$1</a>').replace(/@(\w+)/g, '<a href="/$1">@$1</a>')) }
     }
 
     function showPostOptions() { setShowOptions(!showOptions) }
